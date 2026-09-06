@@ -1,0 +1,26 @@
+<%- include("partials/header") %>
+<section class="section">
+<div class="container narrow">
+<a href="/treinos">← Voltar para treinos</a>
+<p class="eyebrow"><%= workout.objective %> · <%= workout.time %> · <%= workout.level %></p>
+<h1><%= workout.title %></h1>
+<p class="lead">Um plano organizado por dias para você saber exatamente o que fazer em cada sessão.</p>
+<div class="notice">A carga deve ser escolhida de acordo com seu nível e técnica. Esta é uma sugestão educacional, não uma prescrição individual.</div>
+
+<% workout.days.forEach((day, index) => { %>
+<div class="day-block">
+  <div class="day-title"><span>0<%= index + 1 %></span><div><h2><%= day.name %></h2><p><%= day.exercises.length %> exercícios · execução controlada</p></div></div>
+  <div class="exercise-table">
+    <div class="exercise-row exercise-head"><span>#</span><span>Exercício</span><span>Séries × repetições</span><span>Descanso</span></div>
+    <% day.exercises.forEach((e,i) => { %>
+    <div class="exercise-row"><span><%= i+1 %></span><strong><%= e[0] %></strong><span><%= e[1] %></span><span><%= e[2] %></span></div>
+    <% }) %>
+  </div>
+</div>
+<% }) %>
+
+<h2>Como usar o treino</h2>
+<p>Comece com uma carga que permita executar as repetições com técnica adequada. Quando atingir o topo da faixa de repetições com boa execução, considere uma progressão gradual de carga.</p>
+</div>
+</section>
+<%- include("partials/footer") %>

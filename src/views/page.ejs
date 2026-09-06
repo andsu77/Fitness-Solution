@@ -1,0 +1,1 @@
+<%- include("partials/header") %><section class="section"><div class="container"><p class="eyebrow">FITNESS SOLUTION</p><h1><%= heading %></h1><p class="lead"><%= intro %></p><div class="grid three"><% cards.forEach(c => { %><a class="card" href="<%= c[2] %>"><h2><%= c[0] %></h2><p><%= c[1] %></p></a><% }) %></div></div></section><%- include("partials/footer") %>
