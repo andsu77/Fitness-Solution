@@ -91,15 +91,25 @@
 
     workout.days.forEach(function(day, index){
       html += "<div class=\"day-block\"><div class=\"day-title\"><span>0" + (index + 1) + "</span><div><h2>" + escapeHtml(day.name) + "</h2><p>" + day.exercises.length + " exercícios</p></div></div>";
-      html += "<div class=\"exercise-table\"><div class=\"exercise-row exercise-head\"><span>#</span><span>Exercício</span><span>Séries × repetições</span><span>Descanso</span></div>";
+      html += "<div class=\"exercise-table\"><div class=\"exercise-row exercise-head\"><span>#</span><span>Exercício</span><span>Séries × repetições</span><span>Descanso</span><span>Peso</span><span>✓</span></div>";
       day.exercises.forEach(function(ex, i){
-        html += "<div class=\"exercise-row\"><span>" + (i + 1) + "</span><strong>" + escapeHtml(ex.name) + "</strong><span>" + escapeHtml(ex.sets) + "x" + escapeHtml(ex.reps) + "</span><span>" + escapeHtml(ex.rest) + "</span></div>";
+        html += "<div class=\"exercise-row\" data-pattern=\"" + escapeHtml(ex.pattern || "") + "\" data-sets=\"" + escapeHtml(ex.sets) + "\" data-reps=\"" + escapeHtml(ex.reps) + "\" data-rest=\"" + escapeHtml(ex.rest) + "\">";
+        html += "<span>" + (i + 1) + "</span><strong>" + escapeHtml(ex.name) + "</strong><span>" + escapeHtml(ex.sets) + "x" + escapeHtml(ex.reps) + "</span><span>" + escapeHtml(ex.rest) + "</span>";
+        html += "<input type=\"number\" class=\"ex-weight\" placeholder=\"kg\" step=\"0.5\" min=\"0\">";
+        html += "<input type=\"checkbox\" class=\"ex-done\">";
+        html += "</div>";
       });
-      html += "</div></div>";
+      html += "</div>";
+      html += "<div class=\"day-session-actions\"><label class=\"session-weight-label\">Seu peso (kg) <input type=\"number\" class=\"session-bodyweight\" value=\"70\" min=\"30\" max=\"250\"></label><button type=\"button\" class=\"btn-secondary btn-small finish-workout-btn\">FINALIZAR TREINO</button></div>";
+      html += "<div class=\"session-summary\" hidden></div>";
+      html += "</div>";
     });
 
     detailContent.innerHTML = html;
     modal.hidden = false;
+    detailContent.querySelectorAll(".day-block").forEach(function(dayBlock){
+      if (window.initWorkoutDay) window.initWorkoutDay(dayBlock);
+    });
   }
 
   closeModal.addEventListener("click", function(){ modal.hidden = true; });

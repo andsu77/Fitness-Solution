@@ -66,11 +66,12 @@
     exerciseGrid.innerHTML = "";
     var category = currentPool().categories.find(function(c){ return c.key === state.activeCategory; });
     if (!category) return;
+    var icons = window.EXERCISE_ICONS || {};
     category.exercises.forEach(function(exDef){
       var chip = document.createElement("button");
       chip.type = "button";
       chip.className = "exercise-chip";
-      chip.textContent = exDef.name;
+      chip.innerHTML = (icons[exDef.pattern] || "") + "<span>" + exDef.name + "</span>";
       chip.addEventListener("click", function(){
         addExerciseToActiveDay(exDef);
       });
@@ -80,7 +81,7 @@
 
   function addExerciseToActiveDay(exDef){
     var day = state.days[state.activeDayIndex];
-    day.exercises.push({ name: exDef.name, sets: exDef.sets, reps: exDef.reps, rest: exDef.rest });
+    day.exercises.push({ name: exDef.name, sets: exDef.sets, reps: exDef.reps, rest: exDef.rest, pattern: exDef.pattern });
     renderCurrentDay();
   }
 
@@ -154,7 +155,8 @@
       num.textContent = index + 1;
 
       var name = document.createElement("strong");
-      name.textContent = exItem.name;
+      var icons = window.EXERCISE_ICONS || {};
+      name.innerHTML = (icons[exItem.pattern] || "") + "<span>" + exItem.name + "</span>";
 
       var setsInput = document.createElement("input");
       setsInput.type = "text";

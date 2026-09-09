@@ -16,11 +16,23 @@
 <div class="day-block">
   <div class="day-title"><span>0<%= index + 1 %></span><div><h2><%= day.name %></h2><p><%= day.exercises.length %> exercícios · execução controlada</p></div></div>
   <div class="exercise-table">
-    <div class="exercise-row exercise-head"><span>#</span><span>Exercício</span><span>Séries × repetições</span><span>Descanso</span></div>
-    <% day.exercises.forEach((e,i) => { %>
-    <div class="exercise-row"><span><%= i+1 %></span><strong><%= e[0] %></strong><span><%= e[1] %></span><span><%= e[2] %></span></div>
+    <div class="exercise-row exercise-head"><span>#</span><span>Exercício</span><span>Séries × repetições</span><span>Descanso</span><span>Peso</span><span>✓</span></div>
+    <% day.exercises.forEach((e,i) => { const setsVal = e[1].split("x")[0]; const repsVal = e[1].split("x").slice(1).join("x"); %>
+    <div class="exercise-row" data-pattern="<%= e[3] || '' %>" data-sets="<%= setsVal %>" data-reps="<%= repsVal %>" data-rest="<%= e[2] %>">
+      <span><%= i+1 %></span>
+      <strong><%= e[0] %></strong>
+      <span><%= e[1] %></span>
+      <span><%= e[2] %></span>
+      <input type="number" class="ex-weight" placeholder="kg" step="0.5" min="0" aria-label="Peso usado em <%= e[0] %>">
+      <input type="checkbox" class="ex-done" aria-label="Marcar <%= e[0] %> como concluído">
+    </div>
     <% }) %>
   </div>
+  <div class="day-session-actions">
+    <label class="session-weight-label">Seu peso (kg) <input type="number" class="session-bodyweight" value="70" min="30" max="250"></label>
+    <button type="button" class="btn-secondary btn-small finish-workout-btn">FINALIZAR TREINO</button>
+  </div>
+  <div class="session-summary" hidden></div>
 </div>
 <% }) %>
 
@@ -65,6 +77,9 @@
 </div>
 
 <script>window.WORKOUT_SLUG = <%- JSON.stringify(workout.slug) %>;</script>
+<script src="/js/exercise-icons.js"></script>
+<script src="/js/workout-session.js"></script>
+<script>document.querySelectorAll(".day-block").forEach(window.initWorkoutDay);</script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 <script src="/js/export-workout.js"></script>
