@@ -17,7 +17,8 @@ exports.generator = (req, res) => res.render("generator", { title: "Gerador de T
 exports.generateWorkout = (req, res) => {
   const { objective, days, time, level } = req.body;
   const split = days === "3" ? ["Full Body", "Full Body", "Full Body"] : days === "4" ? ["Peito + Tríceps", "Costas + Bíceps", "Pernas", "Ombros + Braços"] : ["Peito + Tríceps", "Costas + Bíceps", "Pernas", "Ombros", "Full Body"];
-  res.render("generator", { title: "Gerador de Treino", result: { objective, days, time, level, split } });
+  const matched = workouts.match({ objective, days, time, level });
+  res.render("generator", { title: "Gerador de Treino", result: { objective, days, time, level, split, matchedSlug: matched ? matched.slug : null, matchedTitle: matched ? matched.title : null } });
 };
 exports.about = (req, res) => res.render("text", { title: "Sobre o Fitness Solution", heading: "Sobre o Fitness Solution", paragraphs: ["O Fitness Solution nasceu para ajudar pessoas com rotinas corridas a encontrar formas práticas de organizar seus treinos.", "O conteúdo é educacional e não substitui avaliação individual de profissionais de educação física, médicos ou nutricionistas."] });
 exports.contact = (req, res) => res.render("text", { title: "Contato", heading: "Contato", paragraphs: ["Entre em contato com a equipe do Fitness Solution para dúvidas, sugestões ou correções de conteúdo."] });

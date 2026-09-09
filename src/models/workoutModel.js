@@ -64,3 +64,20 @@ const plans = [
 
 exports.getAll = () => plans;
 exports.find = slug => plans.find(p => p.slug === slug);
+
+const objectiveAliases = { "Emagrecimento": "Condicionamento" };
+
+exports.match = ({ objective, days, time, level }) => {
+  const wantedDays = parseInt(days, 10);
+  const wantedMinutes = parseInt(time, 10);
+  let best = null, bestScore = -1;
+  plans.forEach(plan => {
+    let score = 0;
+    if (plan.objective === objective || plan.objective === objectiveAliases[objective]) score += 3;
+    if (parseInt(plan.time, 10) === wantedMinutes) score += 2;
+    if (plan.days.length === wantedDays) score += 2;
+    if (plan.level === level) score += 1;
+    if (score > bestScore) { bestScore = score; best = plan; }
+  });
+  return best;
+};

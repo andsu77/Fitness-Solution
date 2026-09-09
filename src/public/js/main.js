@@ -2,9 +2,10 @@
   var reduceMotion = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
   var canHover = window.matchMedia && window.matchMedia("(hover: hover)").matches;
 
-  // Header shadow + halter 3D scroll animation
+  // Header shadow + halter 3D scroll animation + scroll progress bar
   var header = document.getElementById("siteHeader");
   var halter = document.getElementById("halter");
+  var progressBar = document.getElementById("scrollProgress");
   var ticking = false;
   function onScroll(){
     if (header) header.classList.toggle("scrolled", window.scrollY > 10);
@@ -12,6 +13,11 @@
       var rotate = window.scrollY * 0.6;
       var lift = Math.sin(window.scrollY / 60) * 6;
       halter.style.transform = "rotate(" + rotate + "deg) translateY(" + lift + "px)";
+    }
+    if (progressBar){
+      var scrollableHeight = document.documentElement.scrollHeight - window.innerHeight;
+      var pct = scrollableHeight > 0 ? (window.scrollY / scrollableHeight) * 100 : 0;
+      progressBar.style.width = pct + "%";
     }
     ticking = false;
   }
