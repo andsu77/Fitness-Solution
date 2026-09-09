@@ -212,6 +212,7 @@ input:focus,select:focus{outline:none;border-color:var(--accent);box-shadow:0 0 
 .saved-card-actions{display:flex;justify-content:space-between;align-items:center;margin-top:10px}
 .saved-delete-btn{background:none;border:0;color:#c1462f;font-weight:700;font-size:13px;cursor:pointer}
 .saved-modal{position:fixed;inset:0;background:rgba(11,13,15,.65);display:flex;align-items:center;justify-content:center;z-index:300;padding:20px}
+.saved-modal[hidden]{display:none}
 .saved-modal-inner{background:#fff;border-radius:16px;padding:36px;max-width:720px;width:100%;max-height:85vh;overflow-y:auto;position:relative}
 .saved-modal-close{position:absolute;top:16px;right:16px;background:#f0f3f5;border:0;border-radius:50%;width:32px;height:32px;font-size:15px;cursor:pointer}
 
@@ -263,3 +264,44 @@ input:focus,select:focus{outline:none;border-color:var(--accent);box-shadow:0 0 
 .session-bar-fill{height:100%;background:linear-gradient(90deg,var(--accent),var(--accent2));border-radius:6px}
 .session-bar-value{color:#68737b;text-align:right}
 .session-disclaimer{font-size:12px;color:#8a939a;margin:0}
+
+/* ===== Painel de demonstração de exercício ===== */
+.ex-icon{cursor:pointer}
+.demo-panel{position:fixed;top:0;right:0;height:100vh;width:360px;max-width:92vw;background:#fff;box-shadow:-20px 0 50px -20px rgba(0,0,0,.35);z-index:400;transform:translateX(100%);transition:transform .3s ease;overflow-y:auto}
+.demo-panel.open{transform:translateX(0)}
+.demo-panel[hidden]{display:none}
+.demo-panel-inner{padding:32px 26px;position:relative}
+.demo-close{position:absolute;top:16px;right:16px;background:#f0f3f5;border:0;border-radius:50%;width:32px;height:32px;cursor:pointer;font-size:14px}
+.demo-media{background:#0b0d0f;border-radius:16px;padding:26px;display:grid;place-items:center;margin-bottom:22px}
+.demo-svg{width:100%;max-width:200px;color:var(--accent)}
+.demo-title{margin:0 0 10px}
+.demo-tip{color:#68737b;font-size:14px;line-height:1.6;margin:0}
+
+@keyframes demoPush{0%,100%{transform:translateX(0)}50%{transform:translateX(8px)}}
+@keyframes demoPull{0%,100%{transform:translateX(0)}50%{transform:translateX(-8px)}}
+@keyframes demoSquat{0%,100%{transform:translateY(0)}50%{transform:translateY(10px)}}
+@keyframes demoLunge{0%,100%{transform:translateY(0)}50%{transform:translateY(8px)}}
+@keyframes demoHinge{0%,100%{transform:rotate(0deg)}50%{transform:rotate(18deg)}}
+@keyframes demoCurl{0%,100%{transform:rotate(0deg)}50%{transform:rotate(-70deg)}}
+@keyframes demoExtension{0%,100%{transform:rotate(0deg)}50%{transform:rotate(45deg)}}
+@keyframes demoCore{0%,100%{transform:scale(1)}50%{transform:scale(1.03)}}
+@keyframes demoRaise{0%,100%{transform:rotate(0deg)}50%{transform:rotate(-25deg)}}
+@keyframes demoCardio{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
+
+.demo-anim-push{animation:demoPush 1.3s ease-in-out infinite;transform-origin:50px 40px}
+.demo-anim-pull{animation:demoPull 1.3s ease-in-out infinite;transform-origin:50px 40px}
+.demo-anim-squat{animation:demoSquat 1.6s ease-in-out infinite;transform-origin:50px 28px}
+.demo-anim-lunge{animation:demoLunge 1.4s ease-in-out infinite;transform-origin:50px 78px}
+.demo-anim-hinge{animation:demoHinge 1.6s ease-in-out infinite;transform-origin:50px 80px}
+.demo-anim-curl{animation:demoCurl 1.2s ease-in-out infinite;transform-origin:32px 55px}
+.demo-anim-extension{animation:demoExtension 1.2s ease-in-out infinite;transform-origin:68px 20px}
+.demo-anim-core{animation:demoCore 1.8s ease-in-out infinite;transform-origin:60px 70px}
+.demo-anim-raise{animation:demoRaise 1.4s ease-in-out infinite;transform-origin:50px 40px}
+.demo-anim-cardio{animation:demoCardio 0.6s ease-in-out infinite;transform-origin:50px 80px}
+
+@media(prefers-reduced-motion:reduce){
+  .demo-anim-push,.demo-anim-pull,.demo-anim-squat,.demo-anim-lunge,.demo-anim-hinge,.demo-anim-curl,.demo-anim-extension,.demo-anim-core,.demo-anim-raise,.demo-anim-cardio{animation:none}
+}
+@media(max-width:520px){
+  .demo-panel{width:100%;max-width:100%}
+}

@@ -71,7 +71,8 @@
       var chip = document.createElement("button");
       chip.type = "button";
       chip.className = "exercise-chip";
-      chip.innerHTML = (icons[exDef.pattern] || "") + "<span>" + exDef.name + "</span>";
+      chip.setAttribute("data-pattern", exDef.pattern || "");
+      chip.innerHTML = (icons[exDef.pattern] || "") + "<span class=\"ex-name\">" + exDef.name + "</span>";
       chip.addEventListener("click", function(){
         addExerciseToActiveDay(exDef);
       });
@@ -150,13 +151,14 @@
     day.exercises.forEach(function(exItem, index){
       var row = document.createElement("div");
       row.className = "builder-exercise-row";
+      row.setAttribute("data-pattern", exItem.pattern || "");
 
       var num = document.createElement("span");
       num.textContent = index + 1;
 
       var name = document.createElement("strong");
       var icons = window.EXERCISE_ICONS || {};
-      name.innerHTML = (icons[exItem.pattern] || "") + "<span>" + exItem.name + "</span>";
+      name.innerHTML = (icons[exItem.pattern] || "") + "<span class=\"ex-name\">" + exItem.name + "</span>";
 
       var setsInput = document.createElement("input");
       setsInput.type = "text";

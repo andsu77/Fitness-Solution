@@ -97,8 +97,27 @@
     });
   }
 
+  function buildExportDoc(workout){
+    var html = "<div class=\"export-block export-header\"><div class=\"export-brand\"><svg class=\"export-halter\" viewBox=\"0 0 100 40\" aria-hidden=\"true\"><rect x=\"2\" y=\"10\" width=\"10\" height=\"20\" rx=\"3\"></rect><rect x=\"14\" y=\"14\" width=\"6\" height=\"12\" rx=\"2\"></rect><rect x=\"22\" y=\"17\" width=\"56\" height=\"6\" rx=\"3\"></rect><rect x=\"80\" y=\"14\" width=\"6\" height=\"12\" rx=\"2\"></rect><rect x=\"88\" y=\"10\" width=\"10\" height=\"20\" rx=\"3\"></rect></svg><span>FITNESS <b>SOLUTION</b></span></div>";
+    html += "<h1>" + escapeHtml(workout.name) + "</h1>";
+    html += "<div class=\"export-meta\"><span>" + escapeHtml(workout.objective) + "</span><span>" + escapeHtml(typeLabel(workout.type)) + "</span></div></div>";
+
+    workout.days.forEach(function(day, index){
+      html += "<div class=\"export-block export-day\"><div class=\"export-day-title\"><span class=\"export-badge\">0" + (index + 1) + "</span><div><h2>" + escapeHtml(day.name) + "</h2><p>" + day.exercises.length + " exercícios</p></div></div>";
+      html += "<table class=\"export-table\"><thead><tr><th>#</th><th>Exercício</th><th>Séries × Repetições</th><th>Descanso</th></tr></thead><tbody>";
+      day.exercises.forEach(function(ex, i){
+        html += "<tr><td>" + (i + 1) + "</td><td>" + escapeHtml(ex.name) + "</td><td>" + escapeHtml(ex.sets) + "x" + escapeHtml(ex.reps) + "</td><td>" + escapeHtml(ex.rest) + "</td></tr>";
+      });
+      html += "</tbody></table></div>";
+    });
+
+    html += "<div class=\"export-block export-footer\"><p>Treino personalizado criado em Fitness Solution — não substitui orientação de um profissional de educação física.</p><p class=\"export-date\">" + new Date().toLocaleDateString("pt-BR") + "</p></div>";
+    return html;
+  }
+
   function openDetail(workout){
-    var html = "<p class=\"eyebrow\">" + escapeHtml(workout.objective) + " · " + escapeHtml(typeLabel(workout.type)) + "</p>";
+    var html = "<div class=\"export-buttons\"><button type=\"button\" class=\"btn detail-export-pdf\">BAIXAR EM PDF</button><button type=\"button\" class=\"btn-secondary detail-export-img\">SALVAR COMO IMAGEM</button></div>";
+    html += "<p class=\"eyebrow\">" + escapeHtml(workout.objective) + " · " + escapeHtml(typeLabel(workout.type)) + "</p>";
     html += "<h2>" + escapeHtml(workout.name) + "</h2>";
     if (workout.notes) html += "<p class=\"lead\">" + escapeHtml(workout.notes) + "</p>";
 
@@ -107,7 +126,7 @@
       html += "<div class=\"exercise-table\"><div class=\"exercise-row exercise-head\"><span>#</span><span>Exercício</span><span>Séries × repetições</span><span>Descanso</span><span>Peso</span><span>✓</span></div>";
       day.exercises.forEach(function(ex, i){
         html += "<div class=\"exercise-row\" data-pattern=\"" + escapeHtml(ex.pattern || "") + "\" data-sets=\"" + escapeHtml(ex.sets) + "\" data-reps=\"" + escapeHtml(ex.reps) + "\" data-rest=\"" + escapeHtml(ex.rest) + "\">";
-        html += "<span>" + (i + 1) + "</span><strong>" + escapeHtml(ex.name) + "</strong><span>" + escapeHtml(ex.sets) + "x" + escapeHtml(ex.reps) + "</span><span>" + escapeHtml(ex.rest) + "</span>";
+        html += "<span>" + (i + 1) + "</span><strong><span class=\"ex-name\">" + escapeHtml(ex.name) + "</span></strong><span>" + escapeHtml(ex.sets) + "x" + escapeHtml(ex.reps) + "</span><span>" + escapeHtml(ex.rest) + "</span>";
         html += "<input type=\"number\" class=\"ex-weight\" placeholder=\"kg\" step=\"0.5\" min=\"0\">";
         html += "<input type=\"checkbox\" class=\"ex-done\">";
         html += "</div>";
@@ -122,6 +141,36 @@
     modal.hidden = false;
     detailContent.querySelectorAll(".day-block").forEach(function(dayBlock){
       if (window.initWorkoutDay) window.initWorkoutDay(dayBlock);
+    });
+
+    var oldExportDoc = document.getElementById("customExportDoc");
+    if (oldExportDoc) oldExportDoc.remove();
+    var exportDoc = document.createElement("div");
+    exportDoc.id = "customExportDoc";
+    exportDoc.className = "export-doc";
+    exportDoc.innerHTML = buildExportDoc(workout);
+    document.body.appendChild(exportDoc);
+
+    var slug = "treino-" + workout.id;
+    var pdfBtn = detailContent.querySelector(".detail-export-pdf");
+    var imgBtn = detailContent.querySelector(".detail-export-img");
+
+    if (pdfBtn) pdfBtn.addEventListener("click", function(){
+      if (!window.WorkoutExport) return;
+      var original = pdfBtn.textContent;
+      pdfBtn.disabled = true; pdfBtn.textContent = "Gerando PDF...";
+      window.WorkoutExport.toPdf(exportDoc, slug)
+        .catch(function(){ alert("Não foi possível gerar o PDF agora. Tente novamente."); })
+        .finally(function(){ pdfBtn.disabled = false; pdfBtn.textContent = original; });
+    });
+
+    if (imgBtn) imgBtn.addEventListener("click", function(){
+      if (!window.WorkoutExport) return;
+      var original = imgBtn.textContent;
+      imgBtn.disabled = true; imgBtn.textContent = "Gerando imagem...";
+      window.WorkoutExport.toImage(exportDoc, slug)
+        .catch(function(){ alert("Não foi possível gerar a imagem agora. Tente novamente."); })
+        .finally(function(){ imgBtn.disabled = false; imgBtn.textContent = original; });
     });
   }
 
