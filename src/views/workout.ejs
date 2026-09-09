@@ -7,6 +7,11 @@
 <p class="lead">Um plano organizado por dias para você saber exatamente o que fazer em cada sessão.</p>
 <div class="notice">A carga deve ser escolhida de acordo com seu nível e técnica. Esta é uma sugestão educacional, não uma prescrição individual.</div>
 
+<div class="export-buttons">
+  <button class="btn" id="exportPdfBtn" type="button">BAIXAR EM PDF</button>
+  <button class="btn-secondary" id="exportImgBtn" type="button">SALVAR COMO IMAGEM</button>
+</div>
+
 <% workout.days.forEach((day, index) => { %>
 <div class="day-block">
   <div class="day-title"><span>0<%= index + 1 %></span><div><h2><%= day.name %></h2><p><%= day.exercises.length %> exercícios · execução controlada</p></div></div>
@@ -23,4 +28,44 @@
 <p>Comece com uma carga que permita executar as repetições com técnica adequada. Quando atingir o topo da faixa de repetições com boa execução, considere uma progressão gradual de carga.</p>
 </div>
 </section>
+
+<div id="exportTemplate" class="export-doc">
+  <div class="export-block export-header">
+    <div class="export-brand">
+      <svg class="export-halter" viewBox="0 0 100 40" aria-hidden="true"><rect x="2" y="10" width="10" height="20" rx="3"></rect><rect x="14" y="14" width="6" height="12" rx="2"></rect><rect x="22" y="17" width="56" height="6" rx="3"></rect><rect x="80" y="14" width="6" height="12" rx="2"></rect><rect x="88" y="10" width="10" height="20" rx="3"></rect></svg>
+      <span>FITNESS <b>SOLUTION</b></span>
+    </div>
+    <h1><%= workout.title %></h1>
+    <div class="export-meta">
+      <span><%= workout.objective %></span><span><%= workout.time %></span><span><%= workout.level %></span>
+    </div>
+  </div>
+
+  <% workout.days.forEach((day, index) => { %>
+  <div class="export-block export-day">
+    <div class="export-day-title">
+      <span class="export-badge">0<%= index + 1 %></span>
+      <div><h2><%= day.name %></h2><p><%= day.exercises.length %> exercícios · execução controlada</p></div>
+    </div>
+    <table class="export-table">
+      <thead><tr><th>#</th><th>Exercício</th><th>Séries × Repetições</th><th>Descanso</th></tr></thead>
+      <tbody>
+        <% day.exercises.forEach((e, i) => { %>
+        <tr><td><%= i + 1 %></td><td><%= e[0] %></td><td><%= e[1] %></td><td><%= e[2] %></td></tr>
+        <% }) %>
+      </tbody>
+    </table>
+  </div>
+  <% }) %>
+
+  <div class="export-block export-footer">
+    <p>Sugestão educacional gerada em Fitness Solution — não substitui orientação de um profissional de educação física.</p>
+    <p class="export-date"><%= new Date().toLocaleDateString("pt-BR") %></p>
+  </div>
+</div>
+
+<script>window.WORKOUT_SLUG = <%- JSON.stringify(workout.slug) %>;</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script src="/js/export-workout.js"></script>
 <%- include("partials/footer") %>

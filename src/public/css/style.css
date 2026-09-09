@@ -141,6 +141,32 @@ input:focus,select:focus{outline:none;border-color:var(--accent);box-shadow:0 0 
   .reveal{opacity:1;transform:none}
 }
 
+/* ===== Export buttons (PDF / imagem) ===== */
+.export-buttons{display:flex;gap:14px;flex-wrap:wrap;margin:26px 0}
+.btn-secondary{display:inline-block;padding:14px 22px;font-weight:800;border-radius:10px;border:2px solid #15191d;color:#15191d;background:#fff;margin-top:0;cursor:pointer;transition:background .2s,color .2s;font-size:14px}
+.btn-secondary:hover{background:#15191d;color:#fff}
+.btn-secondary:disabled,.btn:disabled{opacity:.6;cursor:default}
+
+/* ===== Export document (hidden, captured for PDF/image) ===== */
+.export-doc{position:fixed;top:0;left:-10000px;width:800px;background:#fff;font-family:Inter,Arial,sans-serif}
+.export-block{background:#fff;padding:36px 44px}
+.export-header{border-bottom:4px solid var(--accent)}
+.export-brand{display:flex;align-items:center;gap:10px;font-weight:900;letter-spacing:-.5px;color:#0b0d0f;margin-bottom:26px;font-size:14px}
+.export-halter{width:34px;height:14px;fill:var(--accent)}
+.export-header h1{font-size:30px;letter-spacing:-1px;margin:0 0 14px;color:#0b0d0f}
+.export-meta{display:flex;gap:10px;flex-wrap:wrap}
+.export-meta span{background:#eef7d8;color:#5c7a1f;font-weight:800;font-size:12px;letter-spacing:.5px;padding:6px 12px;border-radius:20px;text-transform:uppercase}
+.export-day-title{display:flex;gap:16px;align-items:center;margin-bottom:20px}
+.export-badge{width:40px;height:40px;border-radius:10px;background:var(--accent);color:#0b0d0f;font-weight:900;font-size:18px;display:grid;place-items:center;flex-shrink:0}
+.export-day-title h2{margin:0;font-size:21px;color:#0b0d0f}
+.export-day-title p{margin:3px 0 0;font-size:12px;color:#7a848b}
+.export-table{width:100%;border-collapse:collapse;font-size:13px}
+.export-table th{text-align:left;font-size:11px;text-transform:uppercase;letter-spacing:.5px;color:#8a939a;padding:9px 10px;border-bottom:2px solid #e5e9eb}
+.export-table td{padding:11px 10px;border-bottom:1px solid #edf0f1;color:#333}
+.export-table tr:nth-child(even) td{background:#fafbf8}
+.export-footer{text-align:center;color:#9aa2a8;font-size:11px;border-top:1px solid #e5e9eb}
+.export-footer p{margin:4px 0}
+
 .day-block{margin:35px 0 48px}
 .day-title{display:flex;gap:18px;align-items:center;margin-bottom:16px}
 .day-title>span{font-size:28px;font-weight:900;color:#111;background:var(--accent);border-radius:9px;padding:8px 12px}
