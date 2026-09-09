@@ -7,13 +7,27 @@
   if (!grid) return;
 
   var STORAGE_KEY = "meusTreinosCustom";
+  var isLoggedIn = !!window.CURRENT_USER;
 
-  function loadWorkouts(){
+  function loadLocal(){
     try { return JSON.parse(localStorage.getItem(STORAGE_KEY)) || []; }
     catch (e) { return []; }
   }
-  function saveWorkouts(list){
+  function saveLocal(list){
     try { localStorage.setItem(STORAGE_KEY, JSON.stringify(list)); } catch (e) {}
+  }
+  function getWorkouts(){
+    if (isLoggedIn){
+      return fetch("/api/meus-treinos").then(function(r){ return r.json(); }).then(function(data){ return data.workouts || []; });
+    }
+    return Promise.resolve(loadLocal());
+  }
+  function removeWorkout(id){
+    if (isLoggedIn){
+      return fetch("/api/meus-treinos/" + encodeURIComponent(id), { method: "DELETE" }).then(function(r){ return r.json(); });
+    }
+    saveLocal(loadLocal().filter(function(w){ return w.id !== id; }));
+    return Promise.resolve();
   }
   function formatDate(iso){
     try { return new Date(iso).toLocaleDateString("pt-BR"); } catch (e) { return ""; }
@@ -31,7 +45,7 @@
   }
 
   function render(){
-    var workouts = loadWorkouts();
+    getWorkouts().then(function(workouts){
     grid.innerHTML = "";
 
     if (workouts.length === 0){
@@ -68,9 +82,7 @@
       deleteBtn.textContent = "Excluir";
       deleteBtn.addEventListener("click", function(){
         if (!confirm("Excluir o treino \"" + workout.name + "\"? Essa ação não pode ser desfeita.")) return;
-        var updated = loadWorkouts().filter(function(w){ return w.id !== workout.id; });
-        saveWorkouts(updated);
-        render();
+        removeWorkout(workout.id).then(render);
       });
 
       actions.appendChild(viewBtn);
@@ -81,6 +93,7 @@
       card.appendChild(meta);
       card.appendChild(actions);
       grid.appendChild(card);
+    });
     });
   }
 

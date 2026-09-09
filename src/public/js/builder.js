@@ -215,13 +215,31 @@
       days: state.days.filter(function(d){ return d.exercises.length > 0; })
     };
 
+    function goToSaved(){
+      saveMsg.textContent = "Treino salvo! Redirecionando para Meus Treinos...";
+      saveMsg.className = "builder-save-msg success";
+      setTimeout(function(){ window.location.href = "/meus-treinos"; }, 900);
+    }
+
+    if (window.CURRENT_USER){
+      fetch("/api/meus-treinos", {
+        method: "POST",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify(workout)
+      })
+        .then(function(r){ if (!r.ok) throw new Error(); return r.json(); })
+        .then(goToSaved)
+        .catch(function(){
+          saveMsg.textContent = "Não foi possível salvar na sua conta agora. Tente novamente.";
+          saveMsg.className = "builder-save-msg error";
+        });
+      return;
+    }
+
     var saved = [];
     try { saved = JSON.parse(localStorage.getItem(STORAGE_KEY)) || []; } catch (e) { saved = []; }
     saved.push(workout);
     try { localStorage.setItem(STORAGE_KEY, JSON.stringify(saved)); } catch (e) {}
-
-    saveMsg.textContent = "Treino salvo! Redirecionando para Meus Treinos...";
-    saveMsg.className = "builder-save-msg success";
-    setTimeout(function(){ window.location.href = "/meus-treinos"; }, 900);
+    goToSaved();
   });
 })();

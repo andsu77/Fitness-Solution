@@ -29,7 +29,13 @@
     </button>
     <nav id="siteNav">
       <a href="/treinos">Treinos</a><a href="/montar-treino">Montar Treino</a><a href="/meus-treinos">Meus Treinos</a><a href="/ferramentas">Ferramentas</a><a class="nav-cta" href="/gerador-de-treino">Meu treino</a>
+      <% if (typeof currentUser !== 'undefined' && currentUser) { %>
+        <a href="/auth/logout">Sair (<%= currentUser.name.split(' ')[0] %>)</a>
+      <% } else { %>
+        <a href="/entrar">Entrar</a>
+      <% } %>
     </nav>
   </div>
 </header>
+<script>window.CURRENT_USER = <%- JSON.stringify(typeof currentUser !== 'undefined' ? currentUser : null) %>;</script>
 <main>
