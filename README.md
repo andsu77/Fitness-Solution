@@ -13,16 +13,6 @@ Site MVC em Node.js + Express + EJS.
    npm run dev
 6. Abra http://localhost:3000
 
-## SolutionAI (chat de dúvidas)
-
-O site tem um widget de chat flutuante (SolutionAI) para tirar dúvidas sobre treino e alimentação. Para ativar as respostas de IA:
-
-1. Gere uma chave em https://console.anthropic.com.
-2. No `.env`, defina `ANTHROPIC_API_KEY=sua-chave`.
-3. Reinicie o servidor.
-
-Sem a chave configurada, o widget aparece normalmente mas avisa que ainda não foi configurado.
-
 ## Publicação
 
 O projeto precisa ser colocado em uma hospedagem que rode Node.js (por exemplo, Render, Railway ou outro serviço compatível). Depois, conecte um domínio e configure as variáveis de ambiente.
