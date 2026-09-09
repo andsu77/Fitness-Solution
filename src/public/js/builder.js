@@ -25,6 +25,8 @@
   var workoutNotes = document.getElementById("workoutNotes");
   var saveBtn = document.getElementById("saveWorkoutBtn");
   var saveMsg = document.getElementById("saveMsg");
+  var duplicateMsg = document.getElementById("duplicateMsg");
+  var duplicateMsgTimeout = null;
 
   function currentPool(){ return library[state.type]; }
 
@@ -82,8 +84,21 @@
 
   function addExerciseToActiveDay(exDef){
     var day = state.days[state.activeDayIndex];
+    var alreadyAdded = day.exercises.some(function(item){ return item.name === exDef.name; });
+    if (alreadyAdded){
+      showDuplicateMsg("\"" + exDef.name + "\" já está em " + day.name + ".");
+      return;
+    }
     day.exercises.push({ name: exDef.name, sets: exDef.sets, reps: exDef.reps, rest: exDef.rest, pattern: exDef.pattern });
     renderCurrentDay();
+  }
+
+  function showDuplicateMsg(text){
+    if (!duplicateMsg) return;
+    duplicateMsg.textContent = text;
+    duplicateMsg.hidden = false;
+    if (duplicateMsgTimeout) clearTimeout(duplicateMsgTimeout);
+    duplicateMsgTimeout = setTimeout(function(){ duplicateMsg.hidden = true; }, 2500);
   }
 
   function removeExercise(exIndex){
