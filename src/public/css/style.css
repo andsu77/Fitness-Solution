@@ -251,6 +251,8 @@ input:focus,select:focus{outline:none;border-color:var(--accent);box-shadow:0 0 
 /* ===== Sessão de treino (marcar concluído / peso / resumo) ===== */
 .day-session-actions{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:14px;margin:18px 0}
 .session-weight-label{display:flex;align-items:center;gap:8px;font-size:13px;font-weight:700;color:#465057}
+.session-timer{font-variant-numeric:tabular-nums;font-weight:900;font-size:20px;color:#15191d;background:#f0f3f5;padding:6px 14px;border-radius:8px;letter-spacing:.5px}
+.start-workout-btn:disabled{background:#eef7d8;color:#5c7a1f;border-color:#c8dc9a;opacity:1}
 .session-weight-label input{width:70px;padding:8px;border-radius:6px;border:1px solid #ccd2d6;font:inherit}
 .session-summary{background:#f7faf1;border:1px solid #d9e8b8;border-radius:14px;padding:24px;margin-bottom:20px}
 .session-summary h3{margin:0 0 16px}

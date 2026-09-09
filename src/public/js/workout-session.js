@@ -12,9 +12,37 @@ window.initWorkoutDay = function (dayBlock) {
   });
 
   var finishBtn = dayBlock.querySelector(".finish-workout-btn");
+  var startBtn = dayBlock.querySelector(".start-workout-btn");
+  var timerEl = dayBlock.querySelector(".session-timer");
   var summaryEl = dayBlock.querySelector(".session-summary");
   var bodyweightInput = dayBlock.querySelector(".session-bodyweight");
   if (!finishBtn || !summaryEl) return;
+
+  var timerState = { startTime: null, intervalId: null };
+
+  function pad(n) { return String(n).padStart(2, "0"); }
+  function formatTimer(totalSeconds) {
+    totalSeconds = Math.max(0, Math.floor(totalSeconds));
+    var h = Math.floor(totalSeconds / 3600);
+    var m = Math.floor((totalSeconds % 3600) / 60);
+    var s = totalSeconds % 60;
+    return h > 0 ? (h + ":" + pad(m) + ":" + pad(s)) : (pad(m) + ":" + pad(s));
+  }
+  function tick() {
+    if (!timerEl || !timerState.startTime) return;
+    timerEl.textContent = formatTimer((Date.now() - timerState.startTime) / 1000);
+  }
+
+  if (startBtn) {
+    startBtn.addEventListener("click", function () {
+      if (timerState.startTime) return;
+      timerState.startTime = Date.now();
+      if (timerEl) timerEl.textContent = "00:00";
+      startBtn.disabled = true;
+      startBtn.textContent = "TREINO EM ANDAMENTO";
+      timerState.intervalId = setInterval(tick, 1000);
+    });
+  }
 
   function normalizeDashes(s) { return String(s || "").replace(/[–—]/g, "-"); }
   function avgNums(str) {
@@ -25,7 +53,7 @@ window.initWorkoutDay = function (dayBlock) {
 
   finishBtn.addEventListener("click", function () {
     var rows = dayBlock.querySelectorAll(".exercise-row[data-pattern]");
-    var doneCount = 0, totalCount = rows.length, totalVolume = 0, totalSeconds = 0;
+    var doneCount = 0, totalCount = rows.length, totalVolume = 0, estimatedSeconds = 0;
     var bars = [];
 
     rows.forEach(function (row) {
@@ -38,7 +66,7 @@ window.initWorkoutDay = function (dayBlock) {
       var restText = row.getAttribute("data-rest") || "";
       var weightInput = row.querySelector(".ex-weight");
       var weight = parseFloat(weightInput && weightInput.value) || 0;
-      var nameEl = row.querySelector("strong");
+      var nameEl = row.querySelector(".ex-name") || row.querySelector("strong");
       var name = nameEl ? nameEl.textContent.trim() : "Exercício";
 
       var strippedReps = normalizeDashes(repsText).replace(/[\d.\-\s/cada]/g, "");
@@ -57,7 +85,7 @@ window.initWorkoutDay = function (dayBlock) {
 
       var volume = weight * reps * sets;
       totalVolume += volume;
-      totalSeconds += sets * (perSetSeconds + restSeconds);
+      estimatedSeconds += sets * (perSetSeconds + restSeconds);
       bars.push({ name: name, volume: volume });
     });
 
@@ -65,6 +93,16 @@ window.initWorkoutDay = function (dayBlock) {
       summaryEl.hidden = false;
       summaryEl.innerHTML = '<p class="notice">Marque ao menos um exercício como concluído para ver seu resumo.</p>';
       return;
+    }
+
+    var usingRealTime = false;
+    var totalSeconds = estimatedSeconds;
+    if (timerState.startTime) {
+      totalSeconds = (Date.now() - timerState.startTime) / 1000;
+      usingRealTime = true;
+      if (timerState.intervalId) clearInterval(timerState.intervalId);
+      if (timerEl) timerEl.textContent = formatTimer(totalSeconds);
+      if (startBtn) { startBtn.disabled = true; startBtn.textContent = "TREINO FINALIZADO"; }
     }
 
     var bodyweight = parseFloat(bodyweightInput && bodyweightInput.value) || 70;
@@ -87,10 +125,10 @@ window.initWorkoutDay = function (dayBlock) {
       '<div class="session-stats">' +
         '<div class="session-stat"><b>' + doneCount + "/" + totalCount + '</b><span>Exercícios feitos</span></div>' +
         '<div class="session-stat"><b>' + Math.round(totalVolume) + ' kg</b><span>Peso total levantado</span></div>' +
-        '<div class="session-stat"><b>~' + Math.round(minutes) + ' min</b><span>Duração estimada</span></div>' +
+        '<div class="session-stat"><b>' + formatTimer(totalSeconds) + '</b><span>' + (usingRealTime ? "Duração real" : "Duração estimada") + '</span></div>' +
         '<div class="session-stat"><b>~' + calories + ' kcal</b><span>Calorias estimadas</span></div>' +
       "</div>" +
       (barsHtml ? '<div class="session-bars">' + barsHtml + "</div>" : "") +
-      '<p class="session-disclaimer">Estimativa baseada no peso informado, séries, repetições e descanso — não substitui um monitor cardíaco ou avaliação profissional.</p>';
+      '<p class="session-disclaimer">' + (usingRealTime ? "Duração cronometrada em tempo real. " : "") + 'Calorias estimadas com base no peso informado — não substitui um monitor cardíaco ou avaliação profissional.</p>';
   });
 };
