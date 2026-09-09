@@ -2,6 +2,7 @@ const express = require("express");
 const router = express.Router();
 const siteController = require("../controllers/siteController");
 const workoutController = require("../controllers/workoutController");
+const chatController = require("../controllers/chatController");
 
 router.get("/", siteController.home);
 router.get("/treinos", workoutController.index);
@@ -20,5 +21,6 @@ router.get("/contato", siteController.contact);
 router.get("/politica-de-privacidade", siteController.privacy);
 router.get("/termos-de-uso", siteController.terms);
 router.get("/politica-de-cookies", siteController.cookies);
+router.post("/api/chat", chatController.ask);
 
 module.exports = router;
