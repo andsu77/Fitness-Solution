@@ -1,0 +1,22 @@
+<%- include("partials/header") %>
+<section class="section"><div class="container">
+<div class="section-head">
+  <div><p class="eyebrow">SEUS TREINOS</p><h1>Meus Treinos</h1></div>
+  <a class="btn" href="/montar-treino">+ NOVO TREINO</a>
+</div>
+<p class="lead">Os treinos que você monta ficam salvos aqui, neste navegador, prontos para consultar no meio do treino.</p>
+
+<div id="emptyState" class="notice" hidden>Você ainda não salvou nenhum treino. <a href="/montar-treino">Monte o seu agora →</a></div>
+
+<div id="savedGrid" class="grid three"></div>
+
+<div id="detailModal" class="saved-modal" hidden>
+  <div class="saved-modal-inner">
+    <button class="saved-modal-close" id="closeModal" type="button" aria-label="Fechar">✕</button>
+    <div id="detailContent"></div>
+  </div>
+</div>
+
+<script src="/js/saved-workouts.js"></script>
+</div></section>
+<%- include("partials/footer") %>

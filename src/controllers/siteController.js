@@ -1,4 +1,5 @@
 const workouts = require("../models/workoutModel");
+const exerciseLibrary = require("../models/exerciseLibrary");
 
 exports.home = (req, res) => res.render("home", { title: "Fitness Solution | Treine menos. Evolua mais.", workouts: workouts.getAll() });
 exports.goals = (req, res) => res.render("page", { title: "Objetivos", heading: "Escolha seu objetivo", intro: "Conteúdos e treinos organizados para diferentes objetivos.", cards: [
@@ -14,6 +15,8 @@ exports.imc = (req, res) => res.render("calculator", { title: "Calculadora de IM
 exports.protein = (req, res) => res.render("calculator", { title: "Calculadora de Proteína", type: "protein" });
 exports.calories = (req, res) => res.render("calculator", { title: "Calculadora de Calorias", type: "calories" });
 exports.generator = (req, res) => res.render("generator", { title: "Gerador de Treino", result: null });
+exports.builder = (req, res) => res.render("builder", { title: "Montar Treino", library: exerciseLibrary.getLibrary() });
+exports.savedWorkouts = (req, res) => res.render("saved", { title: "Meus Treinos" });
 exports.generateWorkout = (req, res) => {
   const { objective, days, time, level } = req.body;
   const split = days === "3" ? ["Full Body", "Full Body", "Full Body"] : days === "4" ? ["Peito + Tríceps", "Costas + Bíceps", "Pernas", "Ombros + Braços"] : ["Peito + Tríceps", "Costas + Bíceps", "Pernas", "Ombros", "Full Body"];

@@ -1,0 +1,48 @@
+<%- include("partials/header") %>
+<section class="section"><div class="container narrow">
+<p class="eyebrow">MONTE DO SEU JEITO</p>
+<h1>Montar Treino</h1>
+<p class="lead">Escolha o tipo de treino e clique nos exercícios para montar sua divisão. No final, salve com um nome para acessar depois.</p>
+
+<div id="typeStep" class="type-grid">
+  <button class="type-card" data-type="academia" type="button">
+    <h3>Treino em Academia</h3>
+    <p>Barras, halteres, máquinas e cabos.</p>
+  </button>
+  <button class="type-card" data-type="casa" type="button">
+    <h3>Treino em Casa</h3>
+    <p>Calistenia — só o peso do corpo.</p>
+  </button>
+</div>
+
+<div id="builderStep" class="builder-app" hidden>
+  <div class="builder-tip" id="builderTip"></div>
+
+  <div class="builder-days">
+    <div class="builder-days-list" id="daysList"></div>
+    <button class="btn-secondary btn-small" id="addDayBtn" type="button">+ ADICIONAR DIA</button>
+  </div>
+
+  <div class="builder-current-day">
+    <h2 id="currentDayTitle">Dia 1</h2>
+    <div id="currentDayExercises"></div>
+  </div>
+
+  <h3 class="builder-subheading">Clique para adicionar exercícios</h3>
+  <div class="category-tabs" id="categoryTabs"></div>
+  <div class="exercise-grid" id="exerciseGrid"></div>
+
+  <div class="card form builder-save-form">
+    <h2>Salvar treino</h2>
+    <label>Nome do treino<input type="text" id="workoutName" placeholder="Ex: Meu treino de peito e tríceps" maxlength="60"></label>
+    <label>Objetivo<select id="workoutObjective"><option>Hipertrofia</option><option>Emagrecimento</option><option>Força</option><option>Condicionamento</option></select></label>
+    <label>Observações (opcional)<textarea id="workoutNotes" rows="3" placeholder="Ex: treinar de manhã, usar carga leve na primeira semana..."></textarea></label>
+    <button class="btn" id="saveWorkoutBtn" type="button">SALVAR TREINO</button>
+    <p class="builder-save-msg" id="saveMsg"></p>
+  </div>
+</div>
+
+<script>window.EXERCISE_LIBRARY = <%- JSON.stringify(library) %>;</script>
+<script src="/js/builder.js"></script>
+</div></section>
+<%- include("partials/footer") %>

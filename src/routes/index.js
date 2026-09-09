@@ -15,6 +15,8 @@ router.get("/ferramentas/proteina", siteController.protein);
 router.get("/ferramentas/calorias", siteController.calories);
 router.get("/gerador-de-treino", siteController.generator);
 router.post("/gerador-de-treino", siteController.generateWorkout);
+router.get("/montar-treino", siteController.builder);
+router.get("/meus-treinos", siteController.savedWorkouts);
 router.get("/sobre", siteController.about);
 router.get("/contato", siteController.contact);
 router.get("/politica-de-privacidade", siteController.privacy);

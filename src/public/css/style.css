@@ -16,7 +16,7 @@ a{text-decoration:none;color:inherit}
 .nav{height:74px;display:flex;align-items:center;justify-content:space-between}
 .logo{font-weight:900;letter-spacing:-1px;display:flex;align-items:center;gap:10px}
 .logo span{color:var(--accent)}
-.halter{flex:none;fill:var(--accent);filter:drop-shadow(0 4px 10px rgba(184,255,61,.45));will-change:transform;transform-style:preserve-3d}
+.logo-img{height:42px;width:auto;display:block;flex:none;filter:drop-shadow(0 4px 10px rgba(184,255,61,.35));will-change:transform;transform-style:preserve-3d}
 nav{display:flex;align-items:center;gap:25px;font-size:14px;color:#c7cdd2}
 nav a{position:relative;padding:4px 0}
 nav a::after{content:"";position:absolute;left:0;bottom:-2px;width:0;height:2px;background:var(--accent);transition:width .25s ease}
@@ -111,7 +111,8 @@ h3{font-size:20px}
 .notice{background:#f0f3f5;border-left:4px solid #8da832;padding:15px;margin:25px 0;border-radius:0 8px 8px 0}
 .form,.calculator{display:grid;gap:16px;margin-top:30px}
 label{font-weight:700;display:grid;gap:7px}
-input,select{padding:13px;border:1px solid #ccd2d6;border-radius:7px;font:inherit;transition:border-color .2s,box-shadow .2s}
+input,select,textarea{padding:13px;border:1px solid #ccd2d6;border-radius:7px;font:inherit;transition:border-color .2s,box-shadow .2s}
+textarea{resize:vertical}
 input:focus,select:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px rgba(184,255,61,.25)}
 .result{margin-top:20px}
 .result li{padding:10px}
@@ -166,6 +167,60 @@ input:focus,select:focus{outline:none;border-color:var(--accent);box-shadow:0 0 
 .export-table tr:nth-child(even) td{background:#fafbf8}
 .export-footer{text-align:center;color:#9aa2a8;font-size:11px;border-top:1px solid #e5e9eb}
 .export-footer p{margin:4px 0}
+
+/* ===== Montar Treino (builder) ===== */
+.type-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin:30px 0}
+.type-card{border:2px solid var(--line);border-radius:16px;padding:28px;text-align:left;background:#fff;cursor:pointer;transition:border-color .2s,background .2s}
+.type-card:hover{border-color:var(--accent)}
+.type-card.active{border-color:var(--accent);background:#f3fbe4}
+.type-card h3{margin:0 0 8px}
+.type-card p{margin:0;color:#68737b}
+.builder-tip{background:#eef7d8;border-left:4px solid var(--accent);padding:14px 18px;border-radius:0 10px 10px 0;font-size:14px;color:#4a5c1c;margin:26px 0}
+.builder-days{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:24px}
+.builder-days-list{display:flex;gap:8px;flex-wrap:wrap}
+.day-pill{display:inline-flex;align-items:center;gap:8px;padding:8px 16px;border-radius:20px;border:1px solid var(--line);background:#fff;font-weight:700;font-size:13px;cursor:pointer}
+.day-pill.active{background:var(--accent);border-color:var(--accent);color:#0b0d0f}
+.day-pill span{opacity:.6;font-size:11px}
+.day-pill span:hover{opacity:1}
+.btn-small{padding:9px 16px;font-size:12px;margin-top:0}
+.builder-current-day{border:1px solid var(--line);border-radius:14px;padding:24px;margin-bottom:10px}
+.builder-current-day h2{margin:0 0 16px;font-size:20px}
+.builder-empty-day{color:#8a939a;font-size:14px;margin:0}
+.builder-exercise-row{display:grid;grid-template-columns:26px 1.6fr 64px 84px 84px 30px;gap:8px;align-items:center;padding:10px 0;border-top:1px solid var(--line)}
+.builder-exercise-row:first-child{border-top:0}
+.builder-exercise-head{color:#8a939a;font-size:11px;text-transform:uppercase;letter-spacing:.5px;font-weight:800}
+.builder-exercise-row input{padding:7px 8px;font-size:13px;border-radius:6px}
+.builder-remove-btn{background:none;border:0;color:#c1462f;cursor:pointer;font-size:14px}
+.builder-subheading{margin:32px 0 12px;font-size:15px}
+.category-tabs{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px}
+.category-tab{padding:8px 16px;border-radius:20px;border:1px solid var(--line);background:#fff;font-weight:700;font-size:13px;cursor:pointer;transition:.15s}
+.category-tab.active{background:#111;color:#fff;border-color:#111}
+.exercise-grid{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:34px}
+.exercise-chip{padding:10px 16px;border:1px solid var(--line);border-radius:10px;background:#fff;cursor:pointer;font-size:13px;font-weight:600;transition:.15s}
+.exercise-chip:hover{border-color:var(--accent);background:#f3fbe4}
+.builder-save-form{margin-top:10px}
+.builder-save-msg{margin:6px 0 0;font-size:13px;font-weight:700}
+.builder-save-msg.error{color:#c1462f}
+.builder-save-msg.success{color:#5c7a1f}
+
+/* ===== Meus Treinos ===== */
+.saved-card{display:flex;flex-direction:column;gap:8px}
+.badge{background:#eef7d8;color:#5c7a1f;font-weight:800;font-size:11px;letter-spacing:.3px;padding:5px 10px;border-radius:20px;text-transform:uppercase;display:inline-block;margin-right:6px}
+.saved-card h3{margin:4px 0 0}
+.saved-card p{margin:0}
+.saved-card-actions{display:flex;justify-content:space-between;align-items:center;margin-top:10px}
+.saved-delete-btn{background:none;border:0;color:#c1462f;font-weight:700;font-size:13px;cursor:pointer}
+.saved-modal{position:fixed;inset:0;background:rgba(11,13,15,.65);display:flex;align-items:center;justify-content:center;z-index:300;padding:20px}
+.saved-modal-inner{background:#fff;border-radius:16px;padding:36px;max-width:720px;width:100%;max-height:85vh;overflow-y:auto;position:relative}
+.saved-modal-close{position:absolute;top:16px;right:16px;background:#f0f3f5;border:0;border-radius:50%;width:32px;height:32px;font-size:15px;cursor:pointer}
+
+@media(max-width:650px){
+  .type-grid{grid-template-columns:1fr}
+  .builder-exercise-row{display:flex;flex-wrap:wrap;gap:8px}
+  .builder-exercise-row input{width:70px;flex:none}
+  .builder-exercise-row strong{width:100%}
+  .builder-exercise-head{display:none}
+}
 
 .day-block{margin:35px 0 48px}
 .day-title{display:flex;gap:18px;align-items:center;margin-bottom:16px}
