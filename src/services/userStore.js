@@ -2,12 +2,19 @@ const fs = require("fs");
 const path = require("path");
 
 const DATA_DIR = path.join(__dirname, "..", "..", "data", "users");
+const MAX_WORKOUTS_PER_USER = 100;
 
 function ensureDir() {
   fs.mkdirSync(DATA_DIR, { recursive: true });
 }
+function safeSub(sub) {
+  if (typeof sub !== "string" || !/^[a-zA-Z0-9_-]{1,128}$/.test(sub)) {
+    throw new Error("ID de usuário inválido.");
+  }
+  return sub;
+}
 function filePath(sub) {
-  return path.join(DATA_DIR, sub + ".json");
+  return path.join(DATA_DIR, safeSub(sub) + ".json");
 }
 function readUser(sub) {
   ensureDir();
@@ -36,6 +43,9 @@ exports.getWorkouts = (sub) => {
 exports.saveWorkout = (sub, workout) => {
   const user = readUser(sub) || { profile: null, workouts: [] };
   user.workouts.push(workout);
+  if (user.workouts.length > MAX_WORKOUTS_PER_USER) {
+    user.workouts = user.workouts.slice(-MAX_WORKOUTS_PER_USER);
+  }
   writeUser(sub, user);
   return user.workouts;
 };

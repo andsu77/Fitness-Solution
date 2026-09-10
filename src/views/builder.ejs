@@ -43,7 +43,7 @@
   </div>
 </div>
 
-<script>window.EXERCISE_LIBRARY = <%- JSON.stringify(library) %>;</script>
+<script>window.EXERCISE_LIBRARY = <%- JSON.stringify(library).replace(/</g, "\\u003c") %>;</script>
 <script src="/js/exercise-icons.js"></script>
 <script src="/js/builder.js"></script>
 </div></section>

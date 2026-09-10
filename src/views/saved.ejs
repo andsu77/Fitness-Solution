@@ -4,8 +4,15 @@
   <div><p class="eyebrow">SEUS TREINOS</p><h1>Meus Treinos</h1></div>
   <a class="btn" href="/montar-treino">+ NOVO TREINO</a>
 </div>
-<p class="lead">Os treinos que você monta ficam salvos aqui, neste navegador, prontos para consultar no meio do treino.</p>
+<p class="lead">
+  <% if (typeof currentUser !== "undefined" && currentUser) { %>
+    Seus treinos estão salvos na sua conta e sincronizam em qualquer aparelho.
+  <% } else { %>
+    Os treinos que você monta ficam salvos neste navegador. <a href="/entrar">Entre com o Google</a> para acessar de qualquer aparelho.
+  <% } %>
+</p>
 
+<div id="loadingState" class="loading-state">Carregando seus treinos...</div>
 <div id="emptyState" class="notice" hidden>Você ainda não salvou nenhum treino. <a href="/montar-treino">Monte o seu agora →</a></div>
 
 <div id="savedGrid" class="grid three"></div>

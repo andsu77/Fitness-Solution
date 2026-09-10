@@ -37,5 +37,5 @@
     </nav>
   </div>
 </header>
-<script>window.CURRENT_USER = <%- JSON.stringify(typeof currentUser !== 'undefined' ? currentUser : null) %>;</script>
+<script>window.CURRENT_USER = <%- JSON.stringify(typeof currentUser !== 'undefined' ? currentUser : null).replace(/</g, "\\u003c") %>;</script>
 <main>

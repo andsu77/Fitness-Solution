@@ -78,7 +78,7 @@
   </div>
 </div>
 
-<script>window.WORKOUT_SLUG = <%- JSON.stringify(workout.slug) %>;</script>
+<script>window.WORKOUT_SLUG = <%- JSON.stringify(workout.slug).replace(/</g, "\\u003c") %>;</script>
 <script src="/js/exercise-icons.js"></script>
 <script src="/js/workout-session.js"></script>
 <script>document.querySelectorAll(".day-block").forEach(window.initWorkoutDay);</script>

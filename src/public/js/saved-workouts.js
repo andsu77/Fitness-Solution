@@ -1,6 +1,7 @@
 (function(){
   var grid = document.getElementById("savedGrid");
   var emptyState = document.getElementById("emptyState");
+  var loadingState = document.getElementById("loadingState");
   var modal = document.getElementById("detailModal");
   var detailContent = document.getElementById("detailContent");
   var closeModal = document.getElementById("closeModal");
@@ -18,7 +19,10 @@
   }
   function getWorkouts(){
     if (isLoggedIn){
-      return fetch("/api/meus-treinos").then(function(r){ return r.json(); }).then(function(data){ return data.workouts || []; });
+      return fetch("/api/meus-treinos")
+        .then(function(r){ return r.json(); })
+        .then(function(data){ return data.workouts || []; })
+        .catch(function(){ return []; });
     }
     return Promise.resolve(loadLocal());
   }
@@ -45,7 +49,9 @@
   }
 
   function render(){
+    if (loadingState) loadingState.hidden = false;
     getWorkouts().then(function(workouts){
+    if (loadingState) loadingState.hidden = true;
     grid.innerHTML = "";
 
     if (workouts.length === 0){

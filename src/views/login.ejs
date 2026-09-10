@@ -1,10 +1,13 @@
 <%- include("partials/header") %>
-<section class="section"><div class="container narrow" style="text-align:center">
+<section class="section"><div class="container narrow auth-page">
 <p class="eyebrow">SUA CONTA</p>
 <h1>Entrar</h1>
 <p class="lead">Entre com sua conta Google para acessar seus treinos salvos de qualquer aparelho.</p>
 
-<div class="card" style="max-width:380px;margin:30px auto;padding:36px;display:grid;gap:16px;justify-items:center">
+<div class="card auth-card">
+  <div class="auth-badge">
+    <svg viewBox="0 0 40 40" aria-hidden="true"><circle cx="20" cy="20" r="16" fill="none" stroke="currentColor" stroke-width="3"></circle><path d="M13 20l5 5 9-10" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+  </div>
   <% if (clientId) { %>
     <div id="g_id_onload"
       data-client_id="<%= clientId %>"
@@ -22,7 +25,7 @@
   <% } %>
 </div>
 
-<p style="color:#8a939a;font-size:13px">Prefere não entrar? Você ainda pode <a href="/montar-treino">montar treinos</a> e salvá-los neste navegador.</p>
+<p class="auth-guest-note">Prefere não entrar? Você ainda pode <a href="/montar-treino">montar treinos</a> e salvá-los neste navegador.</p>
 </div></section>
 
 <% if (clientId) { %>
