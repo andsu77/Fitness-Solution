@@ -32,6 +32,7 @@ router.get("/politica-de-cookies", siteController.cookies);
 
 router.get("/entrar", authController.loginPage);
 router.post("/auth/google", authController.googleCallback);
+router.post("/auth/google/callback", authController.googleRedirectCallback);
 router.get("/auth/logout", authController.logout);
 
 router.get("/api/meus-treinos", requireAuth, workoutsApiController.list);

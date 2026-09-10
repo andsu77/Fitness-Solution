@@ -9,12 +9,14 @@
     <div id="g_id_onload"
       data-client_id="<%= clientId %>"
       data-context="signin"
-      data-ux_mode="popup"
-      data-callback="handleGoogleCredential"
+      data-ux_mode="redirect"
+      data-login_uri="/auth/google/callback"
       data-auto_prompt="false">
     </div>
     <div class="g_id_signin" data-type="standard" data-shape="rectangular" data-theme="outline" data-text="signin_with" data-size="large" data-logo_alignment="left"></div>
-    <p id="loginError" class="builder-save-msg error" style="display:none"></p>
+    <% if (typeof error !== "undefined" && error) { %>
+      <p class="builder-save-msg error">Não foi possível entrar com o Google. Tente novamente.</p>
+    <% } %>
   <% } else { %>
     <div class="notice">O login com Google ainda não foi configurado neste site. Configure <code>GOOGLE_CLIENT_ID</code> no <code>.env</code> do servidor.</div>
   <% } %>
@@ -25,24 +27,5 @@
 
 <% if (clientId) { %>
 <script src="https://accounts.google.com/gsi/client" async defer></script>
-<script>
-  function handleGoogleCredential(response) {
-    var errorEl = document.getElementById("loginError");
-    fetch("/auth/google", {
-      method: "POST",
-      headers: { "content-type": "application/json" },
-      body: JSON.stringify({ credential: response.credential })
-    })
-      .then(function (r) { return r.json().then(function (data) { return { ok: r.ok, data: data }; }); })
-      .then(function (result) {
-        if (!result.ok) throw new Error(result.data.error || "Falha no login.");
-        window.location.href = "/meus-treinos";
-      })
-      .catch(function (err) {
-        errorEl.textContent = err.message || "Não foi possível entrar. Tente novamente.";
-        errorEl.style.display = "block";
-      });
-  }
-</script>
 <% } %>
 <%- include("partials/footer") %>
